@@ -53,7 +53,9 @@ print(f"Total photos to process: {len(photos_df)}")
 keywords_df = keywords_df[keywords_df["photo_id"].isin(photos_df["photo_id"].unique())]
 print(f"Total keywords to process: {len(keywords_df)}")
 print("Embedding keywords...")
-kw_vecs = encode_text(keywords_df["keyword"].tolist())
+unq_keywords = keywords_df["keyword"].unique().tolist()
+print(f"Unique keywords: {len(unq_keywords)}")
+kw_vecs = encode_text(unq_keywords)
 print("Keyword embeddings shape:", kw_vecs.shape)
 
 # aggregate per photo
@@ -63,7 +65,12 @@ photo_vecs = []
 photo_ids = []
 kw_lookup = keywords_df.groupby("photo_id")
 
+photos_df = photos_df.reset_index(drop=True)
 for idx, row in photos_df.iterrows():
+
+    if idx % 100 == 0:
+        print(f"Processing photo {idx + 1}/{len(photos_df)}: {row['photo_id']}")
+
     photo_id = row["photo_id"]
 
     photo_ids.append(photo_id)

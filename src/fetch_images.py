@@ -28,7 +28,11 @@ def fetch_images_from_file(file_path, debug=False, req_sample_photos=None):
         all_rows = sample_rows
     
     print(f"Total images to save: {len(all_rows)}")
+    all_rows = all_rows.reset_index(drop=True)
     for index, row in all_rows.iterrows():
+        if index % 100 == 0:
+            print(f"Processing row {index + 1}/{len(all_rows)}: {row['photo_id']}")
+
         if not save_one_image(row):
             print(f"Failed to save image for row {index}")
 
@@ -37,4 +41,4 @@ def fetch_images_from_file(file_path, debug=False, req_sample_photos=None):
 if __name__ == "__main__":
 
     req_file_path = "../data/metadata/photos.parquet"
-    fetch_images_from_file(req_file_path, debug=True, req_sample_photos=10)
+    fetch_images_from_file(req_file_path, debug=True, req_sample_photos=1000)
