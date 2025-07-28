@@ -37,7 +37,7 @@ def load_embeddings():
 index, photo_ids = load_embeddings()
 
 query = st.text_input("Enter your search query:")
-k = st.slider("Results to show", 1, min(10, len(photo_ids)), 6, 1)
+k = st.slider("Results to show", 1, min(10, len(photo_ids)), 3, 1)
 submit_button = st.button("Search")
 
 if submit_button and query:
